@@ -59,6 +59,8 @@ class SimpleExoPlayerPool(context: Context) : ExoPlayerPool<ExoPlayer>(MAXIMUM_R
   override fun createPlayer(): ExoPlayer {
     return ExoPlayer.Builder(context)
       .setMediaSourceFactory(mediaSourceFactory)
+      .setSeekBackIncrementMs(SEEK_INTERVAL.inWholeMilliseconds)
+      .setSeekForwardIncrementMs(SEEK_INTERVAL.inWholeMilliseconds)
       .build()
   }
 
@@ -66,6 +68,7 @@ class SimpleExoPlayerPool(context: Context) : ExoPlayerPool<ExoPlayer>(MAXIMUM_R
     private const val MAXIMUM_RESERVED_PLAYERS = 1
     private const val MAXIMUM_SUPPORTED_PLAYBACK_PRE_23 = 6
     private const val MAXIMUM_SUPPORTED_PLAYBACK_PRE_23_LOW_MEM = 3
+    private val SEEK_INTERVAL = 15.seconds
   }
 }
 
