@@ -11,29 +11,29 @@ enum class SmsExportPhase(val duration: Long) {
   PHASE_3(105.days.inWholeMilliseconds);
 
   fun allowSmsFeatures(): Boolean {
-    return Util.isDefaultSmsProvider(ApplicationDependencies.getApplication())
+    return this == PHASE_0 || (Util.isDefaultSmsProvider(ApplicationDependencies.getApplication()) && SignalStore.misc().smsExportPhase.isSmsSupported())
   }
 
   fun isSmsSupported(): Boolean {
-    return true
+    return this != PHASE_3
   }
 
   fun isFullscreen(): Boolean {
-    return false
+    return this.ordinal > PHASE_1.ordinal
   }
 
   fun isBlockingUi(): Boolean {
-    return false
+    return this == PHASE_3
   }
 
   fun isAtLeastPhase1(): Boolean {
-    return false
+    return this.ordinal >= PHASE_1.ordinal
   }
 
   companion object {
     @JvmStatic
     fun getCurrentPhase(duration: Long): SmsExportPhase {
-      return PHASE_0
+      return values().findLast { duration >= it.duration }!!
     }
   }
 }
