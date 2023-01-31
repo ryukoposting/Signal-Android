@@ -36,7 +36,7 @@ public final class ConversationScrollToView extends FrameLayout {
     unreadCount  = findViewById(R.id.conversation_scroll_to_count);
     scrollButton = findViewById(R.id.conversation_scroll_to_button);
 
-    if (attrs != null && !isInEditMode()) {
+    if (attrs != null) {
       TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ConversationScrollToView);
       int        srcId = array.getResourceId(R.styleable.ConversationScrollToView_cstv_scroll_button_src, 0);
 

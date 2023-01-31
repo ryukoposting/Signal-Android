@@ -40,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,7 +76,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.signal.core.util.DimensionUnit;
-import org.signal.core.util.Stopwatch;
 import org.signal.core.util.concurrent.SignalExecutors;
 import org.signal.core.util.concurrent.SimpleTask;
 import org.signal.core.util.logging.Log;
@@ -156,6 +156,7 @@ import org.thoughtcrime.securesms.util.SignalLocalMetrics;
 import org.thoughtcrime.securesms.util.SignalProxyUtil;
 import org.thoughtcrime.securesms.util.SnapToTopDataObserver;
 import org.thoughtcrime.securesms.util.StickyHeaderDecoration;
+import org.signal.core.util.Stopwatch;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
@@ -1393,7 +1394,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
   }
 
   @SuppressLint("StaticFieldLeak")
-  protected void onItemSwiped(long threadId, int unreadCount, int unreadSelfMentionsCount) {
+  protected void onItemSwiped(long threadId, int unreadCount) {
     archiveDecoration.onArchiveStarted();
     itemAnimator.enable();
 
@@ -1433,7 +1434,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
         threadDatabase.restorePins(pinnedThreadIds);
 
         if (unreadCount > 0) {
-          threadDatabase.incrementUnread(threadId, unreadCount, unreadSelfMentionsCount);
+          threadDatabase.incrementUnread(threadId, unreadCount);
           ApplicationDependencies.getMessageNotifier().updateNotification(context);
         }
 
@@ -1557,9 +1558,10 @@ public class ConversationListFragment extends MainFragment implements ActionMode
     }
 
     private void onTrueSwipe(RecyclerView.ViewHolder viewHolder) {
-      ThreadRecord thread = ((ConversationListItem) viewHolder.itemView).getThread();
+      final long threadId    = ((ConversationListItem) viewHolder.itemView).getThreadId();
+      final int  unreadCount = ((ConversationListItem) viewHolder.itemView).getUnreadCount();
 
-      onItemSwiped(thread.getThreadId(), thread.getUnreadCount(), thread.getUnreadSelfMentionsCount());
+      onItemSwiped(threadId, unreadCount);
     }
 
     @Override

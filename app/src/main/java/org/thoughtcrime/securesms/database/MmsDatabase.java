@@ -1988,8 +1988,7 @@ public class MmsDatabase extends MessageDatabase {
 
     boolean isNotStoryGroupReply = retrieved.getParentStoryId() == null || !retrieved.getParentStoryId().isGroupReply();
     if (!Types.isExpirationTimerUpdate(mailbox) && !retrieved.getStoryType().isStory() && isNotStoryGroupReply) {
-      boolean incrementUnreadMentions = !retrieved.getMentions().isEmpty() && retrieved.getMentions().stream().anyMatch(m -> m.getRecipientId().equals(Recipient.self().getId()));
-      SignalDatabase.threads().incrementUnread(threadId, 1, incrementUnreadMentions ? 1 : 0);
+      SignalDatabase.threads().incrementUnread(threadId, 1);
       SignalDatabase.threads().update(threadId, true);
     }
 
@@ -2099,7 +2098,7 @@ public class MmsDatabase extends MessageDatabase {
     notifyConversationListeners(threadId);
 
     if (org.thoughtcrime.securesms.util.Util.isDefaultSmsProvider(context)) {
-      SignalDatabase.threads().incrementUnread(threadId, 1, 0);
+      SignalDatabase.threads().incrementUnread(threadId, 1);
     }
 
     SignalDatabase.threads().update(threadId, true);
