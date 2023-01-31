@@ -14,6 +14,7 @@ import org.thoughtcrime.securesms.dependencies.ApplicationDependencies
 import org.thoughtcrime.securesms.net.ContentProxySelector
 import org.thoughtcrime.securesms.util.AppForegroundObserver
 import org.thoughtcrime.securesms.util.DeviceProperties
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * ExoPlayerPool concrete instance which helps to manage a pool of SimpleExoPlayer objects
