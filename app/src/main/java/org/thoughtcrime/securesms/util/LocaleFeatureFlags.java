@@ -48,7 +48,7 @@ public final class LocaleFeatureFlags {
    * In story group for given country code
    */
   public static boolean isInStoriesCountry() {
-    return isEnabled(FeatureFlags.STORIES_LOCALE, FeatureFlags.storiesLocale());
+    return false;
   }
 
   public static boolean shouldShowReleaseNote(@NonNull String releaseNoteUuid, @NonNull String countries) {
